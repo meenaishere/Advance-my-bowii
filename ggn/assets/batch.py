@@ -183,12 +183,12 @@ async def run_batch(userbot, client, sender, countdown, link):
                 except Exception as e:
                     logger.info(e)
                     if countdown.text != count_down:
-                        await countdown.edit(count_down, buttons=[[Button.url("Join Channel", url="http://t.me/devggn")]])
+                        await countdown.edit(count_down, buttons=[[Button.url("Join Channel", url="https://t.me/tricky_bots")]])
         except Exception as e:
             #logger.info(e)
             #await client.send_message(sender, f"An error occurred during cloning, batch will continue.\n\n**Error:** {str(e)}")
             if countdown.text != count_down:
-                await countdown.edit(count_down, buttons=[[Button.url("Join Channel", url="https://t.me/devggn")]])
+                await countdown.edit(count_down, buttons=[[Button.url("Join Channel", url="https://t.me/tricky_bots")]])
         n = i + 1
         if n == len(ids_data[str(sender)]):
             return -2

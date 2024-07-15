@@ -85,8 +85,8 @@ async def _batch(event):
             _range = await conv.get_reply()
             try:
                 value = int(_range.text)
-                if value > 1000:
-                    return await conv.send_message("You can only get up to 1000 files in a single batch.\n\nPurchase premium to go beyong limit send /plan to know more...")
+                if value > 3:
+                    return await conv.send_message("You can only get only 3 files in a single batch.\n\nPurchase premium to go beyong limit send /plan to know more...")
             except ValueError:
                 return await conv.send_message("Range must be an integer!")
 
@@ -103,7 +103,7 @@ async def _batch(event):
             
 
             cd = await conv.send_message("**Batch process ongoing...**\n\nProcess completed: ", 
-                                    buttons=[[Button.url("Join Channel", url="http://t.me/devggn")]])
+                                    buttons=[[Button.url("Join Channel", url="https://t.me/tricky_bots")]])
             co = await run_batch(userbot, Bot, user_id, cd, _link) 
             try: 
                 if co == -2:
@@ -161,7 +161,7 @@ async def run_batch(userbot, client, sender, countdown, link):
             await get_bulk_msg(userbot, client, sender, link, integer)
             protection = await client.send_message(sender, f"Sleeping for `{timer}` seconds to avoid Floodwaits and Protect account!")
             await countdown.edit(count_down, 
-                                 buttons=[[Button.url("Join Channel", url="https://t.me/devggn")]])
+                                 buttons=[[Button.url("Join Channel", url="https://t.me/tricky_bots")]])
             await asyncio.sleep(timer)
             await protection.delete()
         except IndexError as ie:

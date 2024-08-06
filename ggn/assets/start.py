@@ -28,6 +28,8 @@ from config import MONGODB_CONNECTION_STRING, OWNER_ID, LOG_GROUP
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+from utils import verify_user, check_token
+
 DB_NAME = "start_users"
 COLLECTION_NAME = "registered_users_collection"
 
@@ -47,8 +49,49 @@ def save_registered_users(registered_users):
 
 REGISTERED_USERS = load_registered_users()
 
-@gagan.on(events.NewMessage(pattern=f"^/start"))
-async def start(event):
+@gagan.on(events.message(pattern=f"^/start"))
+async def start(event.message):
+    client = bot
+    message = update
+  data = message.command[1]
+    if data.split("-", 1)[0] == "verify": # set if or elif it depend on your code
+        userid = data.split("-", 2)[1]
+        token = data.split("-", 3)[2]
+        if str(message.from_user.id) != str(userid):
+            return await message.reply_text(
+                text="<b>Invalid link or Expired link !</b>",
+                protect_content=True
+            )
+        is_valid = await check_token(client, userid, token)
+        if is_valid == True:
+            await message.reply_text(
+                text=f"<b>Hey {message.from_user.mention}, You are successfully verified !\nNow you have unlimited access for all files till today midnight.</b>",
+                protect_content=True
+            )
+            await verify_user(client, userid, token)
+        else:
+            return await message.reply_text(
+                text="<b>Invalid link or Expired link !</b>",
+                protect_content=True
+            )
+        from utils import check_verification, get_token
+from info import VERIFY, VERIFY_TUTORIAL, BOT_USERNAME
+
+#@Client.on_message..........
+#async def...........
+
+    if not await check_verification(client, message.from_user.id) and VERIFY == True:
+        btn = [[
+                InlineKeyboardButton("Verify", url=await get_token(client, message.from_user.id, f"https://telegram.me/{BOT_USERNAME}?start="))
+             ],[
+                InlineKeyboardButton("How To Open Link & Verify", url=VERIFY_TUTORIAL)
+            ]]
+            await message.reply_text(
+                text="<b>You are not verified !\nKindly verify to continue !</b>",
+              protect_content=True,
+                reply_markup=InlineKeyboardMarkup(btn)
+            )
+            return    
     """
     Command to start the bot
     """
